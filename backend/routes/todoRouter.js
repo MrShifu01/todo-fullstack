@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { userTodos, createTodo, updateTodo } = require('../controllers/todoController.js')
+const { userTodos, createTodo, updateTodo, deleteTodo } = require('../controllers/todoController.js')
 const bodyParser = require('body-parser');
 const checkJWTToken = require('../middleware/tokenHandler.js');
 
@@ -36,11 +36,18 @@ router.route('/:id').patch(checkJWTToken, (req, res) => {
     const { id }  = req.params
     const { title, completed } = req.body
     const todoInfo = {
-        _id: id,
+        id: id,
         title: title,
         completed: completed
     }
     updateTodo(todoInfo, req, res)
+})
+
+// Delete todo
+router.route('/:id').delete(checkJWTToken, (req, res) => {
+    const { id } = req.params
+    console.log(id)
+    deleteTodo(id, req, res)
 })
 
 module.exports = router

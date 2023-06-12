@@ -41,10 +41,16 @@ const updateUser = asyncHandler(async (userInfo, req, res) => {
     }})
     res.send({message: "User Updated Successfully"})
 })
+
+const deleteUser = asyncHandler(async (id, req, res) => {
+    await User.deleteOne({_id: id})
+    res.send({message: "User Deleted Successfully"})
+})
   
 module.exports = {
     getUsers,
     userLogin,
     createUser,
-    updateUser
+    updateUser,
+    deleteUser
 }

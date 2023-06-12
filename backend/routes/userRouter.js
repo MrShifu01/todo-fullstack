@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getUsers, userLogin, createUser, updateUser} = require('../controllers/userController.js')
+const { getUsers, userLogin, createUser, updateUser, deleteUser} = require('../controllers/userController.js')
 const bodyParser = require('body-parser');
 const checkJWTToken = require('../middleware/tokenHandler.js');
 
@@ -36,7 +36,7 @@ router.route('/').post((req, res) => {
 })
 
 // Update user info
-router.route('/').put(checkJWTToken, (req, res) => {
+router.route('/').patch(checkJWTToken, (req, res) => {
     const filter = req.username
     const { name, username, email } = req.body
     const userInfo = {
@@ -47,6 +47,12 @@ router.route('/').put(checkJWTToken, (req, res) => {
     }
     console.log(userInfo)
     updateUser(userInfo, req, res)
+})
+
+// Delete User
+router.route('/:id').delete(checkJWTToken, (req, res) => {
+    const { id } = req.params
+    deleteUser(id, req, res)
 })
 
 module.exports = router

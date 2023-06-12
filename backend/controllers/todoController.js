@@ -18,15 +18,21 @@ const createTodo = asyncHandler(async (todoInfo, req, res) => {
 })
 
 const updateTodo = asyncHandler(async (todoInfo, req, res) => {
-    await Todo.updateOne({_id: todoInfo._id}, {
+    await Todo.updateOne({_id: todoInfo.id}, {
         title: todoInfo.title,
         completed: todoInfo.completed
     })
     res.send({message: "Todo Updated Successfully"})
 })
 
+const deleteTodo = asyncHandler(async (id, req, res) => {
+    await Todo.deleteOne({_id: id})
+    res.send({message: "Todo Deleted Successfully"})
+})
+
 module.exports = {
     userTodos,
     createTodo,
-    updateTodo
+    updateTodo,
+    deleteTodo
 }
