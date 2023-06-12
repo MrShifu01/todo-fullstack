@@ -30,7 +30,7 @@ const userLogin = asyncHandler (async (userInfo, req, res) => {
     res.send({message: "Username or Password does not exist"})
 })
 
-const userTodos = asyncHandler((async (userInfo, req, res) => {
+const userTodos = asyncHandler(async (userInfo, req, res) => {
     const todos = await Todo.find()
     const userTodoList = []
     for (let i = 0; i < todos.length; i++) {
@@ -39,7 +39,12 @@ const userTodos = asyncHandler((async (userInfo, req, res) => {
         }
     }
     res.json(userTodoList)
-  }));
+  });
+
+const createUser = asyncHandler(async (userInfo, req, res) => {
+    const createdUser = await User.create(userInfo)
+    res.json(createdCar)
+})
   
 
 
