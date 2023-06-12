@@ -2,8 +2,6 @@ const User = require('../models/userModel.js')
 const Todo = require('../models/todoModel.js')
 const asyncHandler = require('../middleware/asyncHandler.js')
 const jwt = require('jsonwebtoken')
-const checkJWTToken = require('../middleware/tokenHandler.js')
-
 
 // Function Fetch all user
 // Route    GET /users
@@ -30,26 +28,23 @@ const userLogin = asyncHandler (async (userInfo, req, res) => {
     res.send({message: "Username or Password does not exist"})
 })
 
-const userTodos = asyncHandler(async (userInfo, req, res) => {
-    const todos = await Todo.find()
-    const userTodoList = []
-    for (let i = 0; i < todos.length; i++) {
-        if (userInfo.username === todos[i].username) {
-            userTodoList.push(todos[i])
-        }
-    }
-    res.json(userTodoList)
-  });
-
 const createUser = asyncHandler(async (userInfo, req, res) => {
-    const createdUser = await User.create(userInfo)
-    res.json(createdCar)
+    await User.create(userInfo)
+    res.send({message: "User created successfully"})
+})
+
+const updateUser = asyncHandler(async (userInfo, req, res) => {
+    await User.updateOne({username: userInfo.filter}, {$set: {
+        name: userInfo.name,
+        username: userInfo.username,
+        email: userInfo.email
+    }})
+    res.send({message: "User Updated Successfully"})
 })
   
-
-
 module.exports = {
     getUsers,
     userLogin,
-    userTodos
+    createUser,
+    updateUser
 }
