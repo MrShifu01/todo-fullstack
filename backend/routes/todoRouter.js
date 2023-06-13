@@ -2,7 +2,8 @@ const express = require('express')
 const router = express.Router()
 const { userTodos, createTodo, updateTodo, deleteTodo } = require('../controllers/todoController.js')
 const bodyParser = require('body-parser');
-const checkJWTToken = require('../middleware/tokenHandler.js');
+const checkTodo = require("../middleware/todoLengthHandler.js")
+
 
 // parse application/x-www-form-urlencoded
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -11,7 +12,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 // Create new todo
-router.route('/').post(checkJWTToken, (req, res) => {
+router.route('/').post(checkTodo, (req, res) => {
     const { title } = req.body
     const username = req.username
     const todoInfo = {
@@ -23,7 +24,7 @@ router.route('/').post(checkJWTToken, (req, res) => {
 })
 
 // Get all user todos
-router.route('/').get(checkJWTToken, (req, res) => {
+router.route('/').get((req, res) => {
     const username = req.username
     const userInfo = {
         username: username,
@@ -32,7 +33,7 @@ router.route('/').get(checkJWTToken, (req, res) => {
 })
 
 // Edit todo
-router.route('/:id').patch(checkJWTToken, (req, res) => {
+router.route('/:id').patch(checkTodo, (req, res) => {
     const { id }  = req.params
     const { title, completed } = req.body
     const todoInfo = {
@@ -44,7 +45,7 @@ router.route('/:id').patch(checkJWTToken, (req, res) => {
 })
 
 // Delete todo
-router.route('/:id').delete(checkJWTToken, (req, res) => {
+router.route('/:id').delete((req, res) => {
     const { id } = req.params
     console.log(id)
     deleteTodo(id, req, res)

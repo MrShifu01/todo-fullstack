@@ -28,11 +28,15 @@ const userLogin = asyncHandler (async (userInfo, req, res) => {
     res.send({message: "Username or Password does not exist"})
 })
 
+// Function Create User
+// Route    POST /users
 const createUser = asyncHandler(async (userInfo, req, res) => {
     await User.create(userInfo)
     res.send({message: "User created successfully"})
 })
 
+// Function Update user
+// Route    PATCH /users
 const updateUser = asyncHandler(async (userInfo, req, res) => {
     await User.updateOne({username: userInfo.filter}, {$set: {
         name: userInfo.name,
@@ -42,9 +46,18 @@ const updateUser = asyncHandler(async (userInfo, req, res) => {
     res.send({message: "User Updated Successfully"})
 })
 
+// Function Delete User
+// Route    DELETE /users
 const deleteUser = asyncHandler(async (id, req, res) => {
     await User.deleteOne({_id: id})
     res.send({message: "User Deleted Successfully"})
+})
+
+// Function Change Password
+// Route    PATCH /users/changePassword
+const changePassword = asyncHandler(async (userInfo, req, res) => {
+    await User.updateOne({username: userInfo.username}, {$set: {password: userInfo.password}})
+    res.send({message: "Password Successfully changed!"})
 })
   
 module.exports = {
@@ -52,5 +65,6 @@ module.exports = {
     userLogin,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    changePassword
 }

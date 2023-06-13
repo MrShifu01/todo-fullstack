@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const { getUsers, userLogin, createUser, updateUser, deleteUser} = require('../controllers/userController.js')
+const { getUsers, userLogin, createUser, updateUser, deleteUser, changePassword} = require('../controllers/userController.js')
 const bodyParser = require('body-parser');
 const checkJWTToken = require('../middleware/tokenHandler.js');
+const checkNewPassword = require('../middleware/newPasswordHandler.js');
+const checkGmail = require('../middleware/gmailHandler.js');
 
 // parse application/x-www-form-urlencoded
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -24,7 +26,7 @@ router.route('/login').post((req, res) => {
 })
 
 // Create new User
-router.route('/').post((req, res) => {
+router.route('/').post(checkGmail, (req, res) => {
     const {name, username, email, password} = req.body
     const userInfo = {
         name: name,
@@ -36,7 +38,7 @@ router.route('/').post((req, res) => {
 })
 
 // Update user info
-router.route('/').patch(checkJWTToken, (req, res) => {
+router.route('/').patch(checkJWTToken, checkGmail, (req, res) => {
     const filter = req.username
     const { name, username, email } = req.body
     const userInfo = {
@@ -53,6 +55,17 @@ router.route('/').patch(checkJWTToken, (req, res) => {
 router.route('/:id').delete(checkJWTToken, (req, res) => {
     const { id } = req.params
     deleteUser(id, req, res)
+})
+
+// Change User Password
+router.route('/changePassword').patch(checkJWTToken, checkNewPassword, (req, res) => {
+    const username = req.username
+    const password = req.newUserPassword
+    const userInfo = {
+        username: username,
+        password: password
+    }
+    changePassword(userInfo, req, res)
 })
 
 module.exports = router
