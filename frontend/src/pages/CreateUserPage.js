@@ -3,9 +3,11 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
+import { Loading } from "../components/Loading"
 
 const CreateUserPage = () => {
 // State Variables
+  const [loading, setLoading] = useState(false)
 // Creating a local state object for a new user to be added
   const [newUser, setNewUser] = useState({
     name: "",
@@ -21,6 +23,8 @@ const CreateUserPage = () => {
   // Function to handle teh creation of a new user
   const handleCreateUser = async(e) => {
     e.preventDefault()
+
+    setLoading(true)
 
     // Checking that a client doesnt leave a field empty during creation of a new user
     if (!newUser.name || !newUser.username || !newUser.email || !newUser.newPassword || !newUser.confirmPassword) {
@@ -125,6 +129,7 @@ const CreateUserPage = () => {
         navigate('/error')
       }
     }
+    setLoading(false)
   }
 
   return (
@@ -172,7 +177,12 @@ const CreateUserPage = () => {
         </Form.Group>
 
         <Button variant="primary" type="submit">
-            create user.
+        {loading ? (
+                    <Loading animation="border" role="status"/>
+                  ) : (
+                    "create user."
+                  )}
+            
         </Button>
 
   </Form>

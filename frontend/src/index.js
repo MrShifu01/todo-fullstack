@@ -23,6 +23,7 @@ import HomePage from './pages/HomePage';
 import ErrorPage from './pages/ErrorPage';
 
 
+// Creating client side routes for Pages
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App/>}>

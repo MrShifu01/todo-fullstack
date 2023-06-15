@@ -9,6 +9,7 @@ const App = () => {
       <Header/>
       <main className='py-3'>
         <Container>
+        {/* Using outlet to show pages to index.js according to the route */}
           <Outlet/>
         </Container>
       </main>

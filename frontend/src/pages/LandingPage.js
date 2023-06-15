@@ -22,7 +22,7 @@ const LandingPage = () => {
     dispatch(resetPage())
     localStorage.removeItem('userData');
     localStorage.removeItem('userToken');
-  }, []);
+  }, [dispatch]);
 
   // Function to handle the login process 
   const handleLogin = async(e) => {
