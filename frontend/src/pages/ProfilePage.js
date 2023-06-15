@@ -29,7 +29,7 @@ const ProfilePage = () => {
       dispatch(changePage("profile"))
     }, [])
 
-    // Dealing with teh Modal
+    // Dealing with the Delete Modal
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -59,7 +59,6 @@ const ProfilePage = () => {
         currentUser: user
       }
 
-      console.log(userInfo)
       if (!userInfo.name || !userInfo.username || !userInfo.email) {
         alert("please fill in all fields")
         return
@@ -137,43 +136,57 @@ const ProfilePage = () => {
                 </ListGroup>}
 
               {updateUser && 
-                <Form onSubmit={(e) => handleUpdateSubmit(e, user, info._id, updateInfo.name !== "" ? updateInfo.name : info.name, updateInfo.username !== "" ? updateInfo.username : info.username, updateInfo.email !== "" ? updateInfo.email : info.email)}>
-                  <Button variant="light" type="submit" onClick={() => { setUpdateUser(false); setUpdatePassword(false); }}>
-                    go back.
-                  </Button>
-                  <Form.Group className="mb-3" controlId="formUserName">
-                    <Form.Label>name.</Form.Label>
-                    <Form.Control
-                      type="text"
-                      defaultValue={updateInfo.name ? updateInfo.name : info.name}
-                      onChange={(e) => setUpdateinfo({ ...updateInfo, name: e.target.value })}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formUserName">
-                    <Form.Label>username.</Form.Label>
-                    <Form.Control
-                      type="text"
-                      defaultValue={updateInfo.username ? updateInfo.username : info.username}
-                      onChange={(e) => setUpdateinfo({ ...updateInfo, username: e.target.value })}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formUserName">
-                    <Form.Label>email.</Form.Label>
-                    <Form.Control
-                      type="text"
-                      defaultValue={updateInfo.email ? updateInfo.email : info.email}
-                      onChange={(e) => setUpdateinfo({ ...updateInfo, email: e.target.value })}
-                    />
-                  </Form.Group>
-                  <Button type="submit" disabled={loading}>
-                    {loading ? (
-                      <Loading animation="border" role="status"/>
-                    ) : (
-                      "update user info."
-                    )}
-                  </Button>
-                </Form>
-
+                  <Form onSubmit={(e) => handleUpdateSubmit(e, user, info._id, updateInfo.name !== "" ? updateInfo.name : info.name, updateInfo.username !== "" ? updateInfo.username : info.username, updateInfo.email !== "" ? updateInfo.email : info.email)}>
+                    <Button variant="light" type="submit" onClick={() => { setUpdateUser(false); setUpdatePassword(false); }}>
+                      go back.
+                    </Button>
+                    <Form.Group className="mb-3" controlId="formUserName">
+                      <Form.Label>name.</Form.Label>
+                      <Form.Control
+                        type="text"
+                        defaultValue={updateInfo.name ? updateInfo.name : info.name}
+                        onChange={(e) => setUpdateinfo({ ...updateInfo, name: e.target.value })}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleUpdateSubmit(e, user, info._id, updateInfo.name !== "" ? updateInfo.name : info.name, updateInfo.username !== "" ? updateInfo.username : info.username, updateInfo.email !== "" ? updateInfo.email : info.email);
+                          }
+                        }}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formUserName">
+                      <Form.Label>username.</Form.Label>
+                      <Form.Control
+                        type="text"
+                        defaultValue={updateInfo.username ? updateInfo.username : info.username}
+                        onChange={(e) => setUpdateinfo({ ...updateInfo, username: e.target.value })}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleUpdateSubmit(e, user, info._id, updateInfo.name !== "" ? updateInfo.name : info.name, updateInfo.username !== "" ? updateInfo.username : info.username, updateInfo.email !== "" ? updateInfo.email : info.email);
+                          }
+                        }}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formUserName">
+                      <Form.Label>email.</Form.Label>
+                      <Form.Control
+                        type="text"
+                        defaultValue={updateInfo.email ? updateInfo.email : info.email}
+                        onChange={(e) => setUpdateinfo({ ...updateInfo, email: e.target.value })}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleUpdateSubmit(e, user, info._id, updateInfo.name !== "" ? updateInfo.name : info.name, updateInfo.username !== "" ? updateInfo.username : info.username, updateInfo.email !== "" ? updateInfo.email : info.email);
+                          }
+                        }}
+                      />
+                    </Form.Group>
+                    <Button type="submit" disabled={loading}>
+                      {loading ? (
+                        <Loading animation="border" role="status"/>
+                      ) : (
+                        "update user info."
+                      )}
+                    </Button>
+                  </Form>
               }
 
               {updatePassword && 
@@ -188,18 +201,30 @@ const ProfilePage = () => {
                         go back.
                   </Button>
 
-                  <Form.Group className="mb-3" controlId="formUserName">
+                  <Form.Group className="mb-3" controlId="formNewPassword">
                     <Form.Label>new password.</Form.Label>
                     <Form.Control 
                     type="text"
-                    onChange={(e) => setUpdatePasswordInfo({ ...updatePasswordInfo, newPassword: e.target.value })} />
+                    onChange={(e) => setUpdatePasswordInfo({ ...updatePasswordInfo, newPassword: e.target.value })} 
+                    onKeyDownCapture={(e) => {
+                      if (e.key === 'Enter') {
+                        handleUpdatePassword(e, info._id, updatePasswordInfo.newPassword, updatePasswordInfo.confirmPassword);
+                      }
+                    }}
+                    />
                   </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="formUserName">
+                  <Form.Group className="mb-3" controlId="formConfirmPassword">
                     <Form.Label>confirm password.</Form.Label>
                     <Form.Control 
                     type="text" 
-                    onChange={(e) => setUpdatePasswordInfo({ ...updatePasswordInfo, confirmPassword: e.target.value })} />
+                    onChange={(e) => setUpdatePasswordInfo({ ...updatePasswordInfo, confirmPassword: e.target.value })} 
+                    onKeyDownCapture={(e) => {
+                      if (e.key === 'Enter') {
+                        handleUpdatePassword(e, info._id, updatePasswordInfo.newPassword, updatePasswordInfo.confirmPassword);
+                      }
+                    }}
+                    />
                   </Form.Group>
 
                   <Button
@@ -233,24 +258,24 @@ const ProfilePage = () => {
 
                 </div>}
 
-                <Modal
-                  show={show}
-                  onHide={handleClose}
-                  backdrop="static"
-                  keyboard={false}
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title>confirm delete user?</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                      cancel.
-                    </Button>
-                    <Button
-                    onClick={(e) => handleDeleteUser(e, info._id)}
-                    >delete user.</Button>
-                  </Modal.Footer>
-                </Modal>
+              <Modal
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>confirm delete user?</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                    cancel.
+                  </Button>
+                  <Button
+                  onClick={(e) => handleDeleteUser(e, info._id)}
+                  >delete user.</Button>
+                </Modal.Footer>
+              </Modal>
             </div>
         ))}
     </div>
