@@ -4,9 +4,9 @@ const connectDB = require('./config/db.js')
 const userRouter = require('./routes/userRouter.js')
 const todoRouter = require('./routes/todoRouter.js')
 const checkJWTToken = require('./middleware/tokenHandler.js');
-const checkDataType = require('./middleware/dataTypeHandler.js')
 const cors = require('cors')
 const bodyParser = require('body-parser');
+const dataTypeHandler = require('./middleware/dataTypeHandler.js')
 
 connectDB()
 const app = express()

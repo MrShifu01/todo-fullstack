@@ -3,7 +3,6 @@ function checkGmail (req, res, next) {
         next()
     } else {
         res.status(403).send({message: "Email address is not Gmail address!"})
-        next()
     }
 }
 

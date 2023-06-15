@@ -3,19 +3,18 @@ const router = express.Router()
 const { userLogin, createUser, updateUser, deleteUser, changePassword, getUser} = require('../controllers/userController.js')
 const checkJWTToken = require('../middleware/tokenHandler.js');
 const checkGmail = require('../middleware/gmailHandler.js');
-const checkDataType = require('../middleware/dataTypeHandler.js');
+const dataTypeHandler = require('../middleware/dataTypeHandler.js')
 const newPasswordHandler = require('../middleware/newPasswordHandler.js');
-
-
+const existingUserHandler = require('../middleware/existingUserHandler.js');
 
 // Get one user details
-router.route('/').get(checkJWTToken, (req, res) => {
+router.get('/', checkJWTToken, (req, res) => {
     const filter = req.username
     getUser(filter, req, res)
 })
 
 // User Login
-router.route('/login').post((req, res) => {
+router.post('/login', dataTypeHandler, (req, res) => {
     const {username, password} = req.body
     const userInfo = {
         username: username,
@@ -25,8 +24,9 @@ router.route('/login').post((req, res) => {
 })
 
 // Create new User
-router.route('/').post((req, res) => {
-    const {name, username, email, password} = req.body
+router.post('/', checkGmail, newPasswordHandler, dataTypeHandler, existingUserHandler, (req, res) => {
+    const {name, username, email } = req.body
+    const password = req.newUserPassword
     const userInfo = {
         name: name,
         username: username,
@@ -38,7 +38,7 @@ router.route('/').post((req, res) => {
 })
 
 // Update user info
-router.route('/:id').patch(checkJWTToken,(req, res) => {
+router.patch('/:id', checkJWTToken, checkGmail, dataTypeHandler, existingUserHandler, (req, res) => {
     const { id } = req.params
     const { name, username, email } = req.body
     const userInfo = {
@@ -47,24 +47,24 @@ router.route('/:id').patch(checkJWTToken,(req, res) => {
         username,
         email,
     }
-    console.log(userInfo)
     updateUser(userInfo, req, res)
 })
 
 // Delete User
-router.route('/:id').delete(checkJWTToken, (req, res) => {
+router.delete('/:id', checkJWTToken, (req, res) => {
     const { id } = req.params
     deleteUser(id, req, res)
 })
 
 // Change User Password
-router.patch('/changePassword/:id', checkJWTToken, newPasswordHandler, (req, res) => {
+router.patch('/changePassword/:id', checkJWTToken, newPasswordHandler, dataTypeHandler, (req, res) => {
     const { id } = req.params
-    const newUserPassword = req.newUserPassword
     const userInfo = {
         id,
-        newUserPassword
+        newUserPassword: req.newUserPassword
     }
+
+    console.log(userInfo)
     changePassword(userInfo, req, res)
 })
 

@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken')
 
 // Function Fetch a user
 // Route    GET /users
-
 const getUser = asyncHandler (async (filter, req, res) => {
     const user = await User.findOne({username: filter})
     res.send(user)
@@ -33,7 +32,6 @@ const userLogin = asyncHandler (async (userInfo, req, res) => {
 // Route    POST /users
 const createUser = asyncHandler(async (userInfo, req, res) => {
     const newUser = await User.create(userInfo)
-    console.log(newUser)
     res.send({
         message: "User created successfully",
         username: newUser.username,

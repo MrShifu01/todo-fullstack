@@ -2,23 +2,42 @@ import { Button, Form } from "react-bootstrap"
 import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap'
 
 const CreateUserPage = () => {
+
   const [newUser, setNewUser] = useState({
     name: "",
     username: "",
     email: "",
-    password: ""
+    newPassword: "",
+    confirmPassword: ""
   })
   const navigate = useNavigate()
 
   const handleCreateUser = async(e) => {
     e.preventDefault()
-    console.log(newUser)
-    const response = await axios.post('/users', newUser)
+    if (!newUser.name || !newUser.username || !newUser.email || !newUser.newPassword || !newUser.confirmPassword) {
+      alert("please fill in all fields")
+      return
+    }
+    try {
+      const response = await axios.post('/users', newUser, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
 
-    loginNewUser(response.data.username, response.data.password)
-    alert(response.data.message)
+      loginNewUser(response.data.username, response.data.password)
+      alert(response.data.message)
+
+    } catch (e) {
+      if (e.response.data.message) {
+        alert(e.response.data.message)
+      } else {
+        navigate('/error')
+      }
+    }
   }
 
   const loginNewUser = async (username, password) => {
@@ -29,7 +48,11 @@ const CreateUserPage = () => {
     }
     
     try {
-      const response = await axios.post('/users/login', userInfo)
+      const response = await axios.post('/users/login', userInfo, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
       if (response.data.message) {
         alert(response.data.message)
         return
@@ -37,23 +60,42 @@ const CreateUserPage = () => {
       getUserDetails(response.data)
       localStorage.setItem("userToken", JSON.stringify(response.data))
     } catch (e) {
-      console.log(`Error: ${e}`)
+      if (e.response.data.message) {
+        alert(e.response.data.message)
+      } else {
+        navigate('/error')
+      }
     }
   }
 
   const getUserDetails = async (userToken) => {
 
-    const response = await axios.get('/users', {
-      headers: {
-        Authorization: `Bearer ${userToken}`
+    try {
+      const response = await axios.get('/users', {
+        headers: {
+          Authorization: `Bearer ${userToken}`
+        }
+      })
+      localStorage.setItem("userData", JSON.stringify(response.data, null, 2))
+      navigate('/home')
+    } catch (e) {
+      if (e.response.data.message) {
+        alert(e.response.data.message)
+      } else {
+        navigate('/error')
       }
-    })
-    localStorage.setItem("userData", JSON.stringify(response.data, null, 2))
-    navigate('/home')
+    }
   }
 
   return (
     <Form onSubmit={handleCreateUser}>
+
+        <LinkContainer to='/'>
+          <Button className="my-3" variant="light" type="submit">
+              go back.
+          </Button>
+        </LinkContainer>
+
         <h1>create a new user.</h1>
         <Form.Group className="mb-3" controlId="formName">
           <Form.Label>name.</Form.Label>
@@ -73,12 +115,17 @@ const CreateUserPage = () => {
             </Form.Text>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-3" controlId="formNewPassword">
           <Form.Label>password.</Form.Label>
-          <Form.Control type="text" value={newUser.password} onChange={(e) => setNewUser({ ...newUser, password: e.target.value })} />
+          <Form.Control type="text" value={newUser.newPassword} onChange={(e) => setNewUser({ ...newUser, newPassword: e.target.value })} />
             <Form.Text className="text-muted">
               must be 6 or more characters
             </Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formConfirmPassword">
+          <Form.Label>confirm password.</Form.Label>
+          <Form.Control type="text" value={newUser.confirmPassword} onChange={(e) => setNewUser({ ...newUser, confirmPassword: e.target.value })} />
         </Form.Group>
 
         <Button variant="primary" type="submit">

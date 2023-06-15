@@ -5,9 +5,11 @@ import { Row, Col, Container, Form } from 'react-bootstrap'
 import Todo from "../components/Todo";
 import { changePage } from "../slices/pageSlice";
 import { Loading } from "../components/Loading";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true); // Loading state
+  const navigate = useNavigate()
 
   const token = JSON.parse(localStorage.getItem("userToken"));
   const [todos, setTodos] = useState([]);
@@ -25,8 +27,12 @@ const HomePage = () => {
         });
         setTodos(response.data);
         setIsLoading(false); // Set loading state to false after data is fetched
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        if (e.response.data.message) {
+          alert(e.response.data.message)
+        } else {
+          navigate('/error')
+        }
       }
     };
 
@@ -54,8 +60,12 @@ const HomePage = () => {
 
       // Clear the newTodo input field
       setNewTodo('');
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      if (e.response.data.message) {
+        alert(e.response.data.message)
+      } else {
+        navigate('/error')
+      }
     }
   };
 
@@ -104,7 +114,7 @@ const HomePage = () => {
               <div key={todo._id}>
                 <Todo todo={todo} onDelete={handleDeleteTodo} onEdit={handleEditTodo} />
               </div>
-            )) : <p style={{opacity: "0.5"}}>your tasks are all completed.</p>
+            )) : <p style={{opacity: "0.5"}}>you have no todos todo.</p>
           )}
         </Col>
         <Col className="col-3"></Col>

@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const { userTodos, createTodo, updateTodo, deleteTodo } = require('../controllers/todoController.js')
-const checkTodo = require("../middleware/todoLengthHandler.js")
+const todoLengthHandler = require("../middleware/todoLengthHandler.js")
+const dataTypeHandler = require('../middleware/dataTypeHandler.js')
 
 // Create new todo
-router.route('/').post((req, res) => {
+router.route('/').post(todoLengthHandler, dataTypeHandler, (req, res) => {
     const { title } = req.body
     const username = req.username
     const todoInfo = {
@@ -24,8 +25,20 @@ router.route('/').get((req, res) => {
     userTodos(userInfo, req, res)
 })
 
-// Edit todo
-router.route('/:id').patch((req, res) => {
+// Edit todo title
+router.route('/:id').patch(todoLengthHandler, dataTypeHandler, (req, res) => {
+    const { id }  = req.params
+    const { title, completed } = req.body
+    const todoInfo = {
+        id: id,
+        title: title,
+        completed: completed
+    }
+    updateTodo(todoInfo, req, res)
+})
+
+// Edit todo completed
+router.route('/completed/:id').patch(dataTypeHandler, (req, res) => {
     const { id }  = req.params
     const { title, completed } = req.body
     const todoInfo = {

@@ -28,27 +28,43 @@ const LandingPage = () => {
     }
 
     try {
-      const response = await axios.post('/users/login', userInfo)
+      const response = await axios.post('/users/login', userInfo, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
       if (response.data.message) {
         alert(response.data.message)
         return
       }
-      getUserDetails(response.data)
       localStorage.setItem("userToken", JSON.stringify(response.data))
+      await getUserDetails(response.data)
     } catch (e) {
-      console.log(`Error: ${e}`)
+      if (e.response.data.message) {
+        alert(e.response.data.message)
+      } else {
+        navigate('/error')
+      }
     }
   }
 
   const getUserDetails = async (userToken) => {
 
-    const response = await axios.get('/users', {
-      headers: {
-        Authorization: `Bearer ${userToken}`
+    try {
+      const response = await axios.get('/users', {
+        headers: {
+          Authorization: `Bearer ${userToken}`
+        }
+      })
+      localStorage.setItem("userData", JSON.stringify(response.data, null, 2))
+      navigate('/home')
+    } catch (e) {
+      if (e.response.data.message) {
+        alert(e.response.data.message)
+      } else {
+        navigate('/error')
       }
-    })
-    localStorage.setItem("userData", JSON.stringify(response.data, null, 2))
-    navigate('/home')
+    }
   }
 
   return (

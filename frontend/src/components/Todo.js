@@ -7,8 +7,10 @@ import { FaTrash } from 'react-icons/fa'
 import { BiEdit } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeEditTodoId, resetEditTodoId } from '../slices/editTodoSlice'
+import { useNavigate } from 'react-router-dom';
 
 function Todo({todo, onDelete, onEdit}) {
+    const navigate = useNavigate()
     const [checked, setChecked] = useState(false)
     const [editId, setEditId] = useState(false)
     const [editTodo, setEditTodo] = useState("")
@@ -20,14 +22,22 @@ function Todo({todo, onDelete, onEdit}) {
 
     const handleDeleteTodo = async (e, id) => {
         e.preventDefault()
-        const response = await axios.delete(`/todos/${id}`, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            }
-        })
-        onDelete(id);
-        console.log(response.data.message)
+        try {
+            const response = await axios.delete(`/todos/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            onDelete(id);
+            console.log(response.data.message)
+        } catch (e) {
+            if (e.response.data.message) {
+                alert(e.response.data.message)
+              } else {
+                navigate('/error')
+              }
+        }
     }
 
     const handleEditTodo = async (e, id) => {
@@ -39,29 +49,43 @@ function Todo({todo, onDelete, onEdit}) {
     const handleSubmitEdit = async (e, toEdit, editTodo) => {
         e.preventDefault()
 
-        const response = await axios.patch(`/todos/${toEdit}`, { title: editTodo}, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            }
-        })
-        onEdit(toEdit, editTodo)
-        setChecked(false)
-        setEditId('')
-        dispatch(resetEditTodoId())
-        console.log(response.data.message)
-    }
+        try {
+            await axios.patch(`/todos/${toEdit}`, { title: editTodo}, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            onEdit(toEdit, editTodo)
+            setChecked(false)
+            setEditId('')
+            dispatch(resetEditTodoId())
+        } catch (e) {
+            if (e.response.data.message) {
+                alert(e.response.data.message)
+              } else {
+                navigate('/error')
+              }
+        }}
 
     const handleCheckboxToggle = async (id) => {
         const newChecked = !checked;
         setChecked(newChecked);
-        const response = await axios.patch(`/todos/${id}`, { completed: newChecked }, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          }
-        });
-        console.log(response.data.message);
+        try {
+            const response = await axios.patch(`/todos/completed/${id}`, { completed: newChecked }, {
+                headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+                }
+            });
+            console.log(response.data.message);
+        } catch (e) {
+            if (e.response.data.message) {
+                alert(e.response.data.message)
+              } else {
+                navigate('/error')
+              }
+        }
       };
 
   return (
