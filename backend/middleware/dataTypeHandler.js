@@ -1,4 +1,4 @@
-
+// Middleware to check if incoming requests are of JSON type and responding accordingly
 function dataTypeHandler(req, res, next) {
   const contentType = req.headers['content-type'];
   if (contentType && contentType.toLowerCase() === 'application/json') {

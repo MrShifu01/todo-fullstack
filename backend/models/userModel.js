@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// Assign a simple model for the users
 const userSchema = mongoose.Schema({
     name: String,
     username: String,

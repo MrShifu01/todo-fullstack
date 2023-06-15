@@ -1,7 +1,5 @@
 const User = require('../models/userModel.js')
-const Todo = require('../models/todoModel.js')
 const asyncHandler = require('../middleware/asyncHandler.js')
-const newPasswordHandler = require('../middleware/newPasswordHandler.js')
 const jwt = require('jsonwebtoken')
 
 // Function Fetch a user
@@ -40,7 +38,7 @@ const createUser = asyncHandler(async (userInfo, req, res) => {
 })
 
 // Function Update user
-// Route    PATCH /users
+// Route    PATCH /users/:id
 const updateUser = asyncHandler(async (userInfo, req, res) => {
     await User.updateOne({_id: userInfo.id}, {$set: {
         name: userInfo.name,
@@ -51,14 +49,14 @@ const updateUser = asyncHandler(async (userInfo, req, res) => {
 })
 
 // Function Delete User
-// Route    DELETE /users
+// Route    DELETE /users/:id
 const deleteUser = asyncHandler(async (id, req, res) => {
     await User.deleteOne({_id: id})
     res.send({message: "User Deleted Successfully"})
 })
 
 // Function Change Password
-// Route    PATCH /users/changePassword
+// Route    PATCH /users/changePassword/:id
 const changePassword = asyncHandler(async (userInfo, req, res) => {
     try {
         await User.updateOne({_id: userInfo.id}, {$set: {password: userInfo.newUserPassword}})

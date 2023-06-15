@@ -4,7 +4,7 @@ const { userTodos, createTodo, updateTodo, deleteTodo } = require('../controller
 const todoLengthHandler = require("../middleware/todoLengthHandler.js")
 const dataTypeHandler = require('../middleware/dataTypeHandler.js')
 
-// Create new todo
+// Create new todo and check todo length and data type with middleware
 router.route('/').post(todoLengthHandler, dataTypeHandler, (req, res) => {
     const { title } = req.body
     const username = req.username
@@ -25,7 +25,7 @@ router.route('/').get((req, res) => {
     userTodos(userInfo, req, res)
 })
 
-// Edit todo title
+// Edit todo title and check todo length and data type with middleware
 router.route('/:id').patch(todoLengthHandler, dataTypeHandler, (req, res) => {
     const { id }  = req.params
     const { title, completed } = req.body
@@ -37,7 +37,7 @@ router.route('/:id').patch(todoLengthHandler, dataTypeHandler, (req, res) => {
     updateTodo(todoInfo, req, res)
 })
 
-// Edit todo completed
+// Edit todo completed and check the data type with middleware
 router.route('/completed/:id').patch(dataTypeHandler, (req, res) => {
     const { id }  = req.params
     const { title, completed } = req.body

@@ -8,12 +8,14 @@ const newPasswordHandler = require('../middleware/newPasswordHandler.js');
 const existingUserHandler = require('../middleware/existingUserHandler.js');
 
 // Get one user details
+// check their JWT with middleware
 router.get('/', checkJWTToken, (req, res) => {
     const filter = req.username
     getUser(filter, req, res)
 })
 
-// User Login
+// User Login 
+// check the data type with middleware
 router.post('/login', dataTypeHandler, (req, res) => {
     const {username, password} = req.body
     const userInfo = {
@@ -24,6 +26,7 @@ router.post('/login', dataTypeHandler, (req, res) => {
 })
 
 // Create new User
+//  check password validation, email validation, existing user validation and data type with middleware
 router.post('/', checkGmail, newPasswordHandler, dataTypeHandler, existingUserHandler, (req, res) => {
     const {name, username, email } = req.body
     const password = req.newUserPassword
@@ -38,6 +41,7 @@ router.post('/', checkGmail, newPasswordHandler, dataTypeHandler, existingUserHa
 })
 
 // Update user info
+//  check JWT, email validation, existing user validation and data type with middleware
 router.patch('/:id', checkJWTToken, checkGmail, dataTypeHandler, existingUserHandler, (req, res) => {
     const { id } = req.params
     const { name, username, email } = req.body
@@ -51,12 +55,14 @@ router.patch('/:id', checkJWTToken, checkGmail, dataTypeHandler, existingUserHan
 })
 
 // Delete User
+// check JWT
 router.delete('/:id', checkJWTToken, (req, res) => {
     const { id } = req.params
     deleteUser(id, req, res)
 })
 
 // Change User Password
+// check JWT, password validation and data type with middleware
 router.patch('/changePassword/:id', checkJWTToken, newPasswordHandler, dataTypeHandler, (req, res) => {
     const { id } = req.params
     const userInfo = {

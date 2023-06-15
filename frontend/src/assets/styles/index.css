@@ -1,58 +1,70 @@
+/* Set a minimum height for the main content area */
 main {
   min-height: 80vh;
 }
 
+/* Style for a container with buttons in the landing page */
 .landing-page-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 1rem; /* Gap between the buttons */
 }
 
+/* Style for a navigation link that is currently inactive */
 .nav-link-inactive {
-  pointer-events: none;
+  pointer-events: none; /* Disable pointer events on the inactive link */
 }
 
+/* Style for a todo item */
 .todo-item {
   display: flex;
   justify-content: space-between;
-  color:black;
+  color: black;
   font-size: 1.5rem;
 }
 
+/* Style for the left section of a todo item */
 .todo-left {
   display: flex;
 }
 
+/* Style for a container with todo functions (e.g., delete, edit) */
 .todo-functions {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 1rem; /* Gap between the functions */
+  flex-wrap: wrap; /* Allow functions to wrap to the next line if necessary */
 }
 
+/* Style for a delete button or an edit button */
 .delete-button,
-.edit-button{
+.edit-button {
   cursor: pointer;
 }
 
+/* Hover effect for the delete button */
 .delete-button:hover {
   color: red;
 }
 
+/* Hover effect for the edit button */
 .edit-button:hover {
   color: green;
 }
 
-.todo-titlestriked{
+/* Style for a todo title when it is striked through */
+.todo-titlestriked {
   text-decoration: line-through;
   color: #444;
 }
 
+/* Style for a container with profile items */
 .profile-item {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr); /* Create 4 equal-width columns */
 }
 
+/* Style for a container with profile buttons */
 .profile-buttons {
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 1rem; /* Gap between the buttons */
+  margin-top: 1rem; /* Top margin for spacing */
 }
