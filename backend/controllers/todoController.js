@@ -13,8 +13,11 @@ const userTodos = asyncHandler(async (userInfo, req, res) => {
 });
 
 const createTodo = asyncHandler(async (todoInfo, req, res) => {
-    await Todo.create(todoInfo)
-    res.send({message: "Todo created successfully"})
+    const newTodo = await Todo.create(todoInfo)
+    res.send({
+        message: "Todo created successfully",
+        item: newTodo
+    })
 })
 
 const updateTodo = asyncHandler(async (todoInfo, req, res) => {

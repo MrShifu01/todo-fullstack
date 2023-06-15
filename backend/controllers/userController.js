@@ -1,14 +1,15 @@
 const User = require('../models/userModel.js')
 const Todo = require('../models/todoModel.js')
 const asyncHandler = require('../middleware/asyncHandler.js')
+const newPasswordHandler = require('../middleware/newPasswordHandler.js')
 const jwt = require('jsonwebtoken')
 
-// Function Fetch all user
+// Function Fetch a user
 // Route    GET /users
-const getUsers = asyncHandler (async (req, res) => {
-    const users = await User.find()
-    res.json(users)
-    return
+
+const getUser = asyncHandler (async (filter, req, res) => {
+    const user = await User.findOne({username: filter})
+    res.send(user)
 })
 
 // Function User Login
@@ -31,14 +32,19 @@ const userLogin = asyncHandler (async (userInfo, req, res) => {
 // Function Create User
 // Route    POST /users
 const createUser = asyncHandler(async (userInfo, req, res) => {
-    await User.create(userInfo)
-    res.send({message: "User created successfully"})
+    const newUser = await User.create(userInfo)
+    console.log(newUser)
+    res.send({
+        message: "User created successfully",
+        username: newUser.username,
+        password: newUser.password
+    })
 })
 
 // Function Update user
 // Route    PATCH /users
 const updateUser = asyncHandler(async (userInfo, req, res) => {
-    await User.updateOne({username: userInfo.filter}, {$set: {
+    await User.updateOne({_id: userInfo.id}, {$set: {
         name: userInfo.name,
         username: userInfo.username,
         email: userInfo.email
@@ -56,15 +62,19 @@ const deleteUser = asyncHandler(async (id, req, res) => {
 // Function Change Password
 // Route    PATCH /users/changePassword
 const changePassword = asyncHandler(async (userInfo, req, res) => {
-    await User.updateOne({username: userInfo.username}, {$set: {password: userInfo.password}})
-    res.send({message: "Password Successfully changed!"})
+    try {
+        await User.updateOne({_id: userInfo.id}, {$set: {password: userInfo.newUserPassword}})
+        res.send({message: "Password Successfully changed!"})
+    } catch (e) {
+        console.log(e)
+    }
 })
   
 module.exports = {
-    getUsers,
     userLogin,
     createUser,
     updateUser,
     deleteUser,
-    changePassword
+    changePassword,
+    getUser
 }

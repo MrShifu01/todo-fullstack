@@ -7,7 +7,7 @@ const todos = [
     {
       username: "emilywilson",
       title: "Go grocery shopping",
-      completed: true
+      completed: false
     },
     {
       username: "michaeljohnson",
@@ -22,7 +22,7 @@ const todos = [
     {
       username: "janesmith",
       title: "Pay bills",
-      completed: true
+      completed: false
     },
     {
       username: "emilywilson",
@@ -37,7 +37,7 @@ const todos = [
     {
       username: "johndoe",
       title: "Go for a run",
-      completed: true
+      completed: false
     },
     {
       username: "davidbrown",
@@ -47,7 +47,7 @@ const todos = [
     {
       username: "janesmith",
       title: "Do laundry",
-      completed: true
+      completed: false
     },
     {
       username: "emilywilson",
@@ -62,7 +62,7 @@ const todos = [
     {
       username: "michaeljohnson",
       title: "Call a friend",
-      completed: true
+      completed: false
     },
     {
       username: "davidbrown",
@@ -77,7 +77,7 @@ const todos = [
     {
       username: "emilywilson",
       title: "Renew gym membership",
-      completed: true
+      completed: false
     },
     {
       username: "johndoe",
@@ -92,7 +92,7 @@ const todos = [
     {
       username: "emilywilson",
       title: "Attend a workshop",
-      completed: true
+      completed: false
     },
     {
       username: "michaeljohnson",
@@ -102,7 +102,7 @@ const todos = [
     {
       username: "janesmith",
       title: "Plant flowers in the garden",
-      completed: true
+      completed: false
     }
   ];
 

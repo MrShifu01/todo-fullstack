@@ -1,11 +1,12 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import { apiSlice } from './slices/apiSlice'
+import { configureStore } from '@reduxjs/toolkit'
+import pageReducer from './slices/pageSlice'
+import editTodoReducer from './slices/editTodoSlice'
 
-export const store = configureStore({
+const store = configureStore({
     reducer: {
-        [apiSlice.reducerPath]: apiSlice.reducer
-    },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware)
+        edittodo: editTodoReducer,
+        page: pageReducer
+    }
 })
 
 export default store

@@ -2,31 +2,31 @@ const userData = [
           {
             "name": "John Doe",
             "username": "johndoe",
-            "email": "johndoe@example.com",
+            "email": "johndoe@gmail.com",
             "password": "password1"
           },
           {
             "name": "Jane Smith",
             "username": "janesmith",
-            "email": "janesmith@example.com",
+            "email": "janesmith@gmail.com",
             "password": "password2"
           },
           {
             "name": "Michael Johnson",
             "username": "michaeljohnson",
-            "email": "michaeljohnson@example.com",
+            "email": "michaeljohnson@gmail.com",
             "password": "password3"
           },
           {
             "name": "Emily Wilson",
             "username": "emilywilson",
-            "email": "emilywilson@example.com",
+            "email": "emilywilson@gmail.com",
             "password": "password4"
           },
           {
             "name": "David Brown",
             "username": "davidbrown",
-            "email": "davidbrown@example.com",
+            "email": "davidbrown@gmail.com",
             "password": "password5"
           }
         ]

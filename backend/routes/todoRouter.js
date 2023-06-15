@@ -1,18 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const { userTodos, createTodo, updateTodo, deleteTodo } = require('../controllers/todoController.js')
-const bodyParser = require('body-parser');
 const checkTodo = require("../middleware/todoLengthHandler.js")
 
-
-// parse application/x-www-form-urlencoded
-router.use(bodyParser.urlencoded({ extended: false }));
-
-// parse application/json
-router.use(bodyParser.json());
-
 // Create new todo
-router.route('/').post(checkTodo, (req, res) => {
+router.route('/').post((req, res) => {
     const { title } = req.body
     const username = req.username
     const todoInfo = {
@@ -33,7 +25,7 @@ router.route('/').get((req, res) => {
 })
 
 // Edit todo
-router.route('/:id').patch(checkTodo, (req, res) => {
+router.route('/:id').patch((req, res) => {
     const { id }  = req.params
     const { title, completed } = req.body
     const todoInfo = {
@@ -47,7 +39,6 @@ router.route('/:id').patch(checkTodo, (req, res) => {
 // Delete todo
 router.route('/:id').delete((req, res) => {
     const { id } = req.params
-    console.log(id)
     deleteTodo(id, req, res)
 })
 

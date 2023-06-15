@@ -1,0 +1,58 @@
+main {
+  min-height: 80vh;
+}
+
+.landing-page-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-link-inactive {
+  pointer-events: none;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  color:black;
+  font-size: 1.5rem;
+}
+
+.todo-left {
+  display: flex;
+}
+
+.todo-functions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.delete-button,
+.edit-button{
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  color: red;
+}
+
+.edit-button:hover {
+  color: green;
+}
+
+.todo-titlestriked{
+  text-decoration: line-through;
+  color: #444;
+}
+
+.profile-item {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.profile-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
